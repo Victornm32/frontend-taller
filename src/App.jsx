@@ -16,7 +16,7 @@ function App() {
   };
 
   const cargarRepuestos = () => {
-    fetch('http://localhost:3001/api/repuestos')
+    fetch('https://taller-inventario-1yj3.onrender.com/api/repuestos')
       .then(res => res.json())
       .then(datos => setRepuestos(datos));
   };
@@ -38,13 +38,13 @@ function App() {
 
   const eliminarRepuesto = async (id) => {
     if (window.confirm('¿Eliminar este producto permanentemente?')) {
-      await fetch(`http://localhost:3001/api/repuestos/${id}`, { method: 'DELETE' });
+      await fetch(`https://taller-inventario-1yj3.onrender.com/api/repuestos/${id}`, { method: 'DELETE' });
       cargarRepuestos();
     }
   };
 
   const ajustarStock = async (id, cantidad) => {
-    await fetch(`http://localhost:3001/api/repuestos/${id}/stock`, {
+    await fetch(`https://taller-inventario-1yj3.onrender.com/api/repuestos/${id}/stock`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ cantidad })
@@ -55,8 +55,8 @@ function App() {
   const guardarRepuesto = async (e) => {
     e.preventDefault();
     const url = editandoId 
-      ? `http://localhost:3001/api/repuestos/${editandoId}` 
-      : 'http://localhost:3001/api/repuestos';
+      ? `https://taller-inventario-1yj3.onrender.com/api/repuestos/${editandoId}` 
+      : 'https://taller-inventario-1yj3.onrender.com/api/repuestos';
     const metodo = editandoId ? 'PUT' : 'POST';
 
     try {
