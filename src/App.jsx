@@ -64,25 +64,36 @@ function App() {
     cargarRepuestos();
   };
 
-  const guardarRepuesto = async (e) => {
-    e.preventDefault();
-    const url = editandoId 
-      ? `https://taller-inventario-1yj3.onrender.com/api/repuestos/${editandoId}` 
-      : 'https://taller-inventario-1yj3.onrender.com/api/repuestos';
-    const metodo = editandoId ? 'PUT' : 'POST';
+ const guardarRepuesto = async (e) => {
+  e.preventDefault();
+  
+  // URL correcta apuntando a tu servidor de Render
+  const url = editandoId 
+    ? `https://taller-inventario-1yj3.onrender.com/api/repuestos/${editandoId}` 
+    : 'https://taller-inventario-1yj3.onrender.com/api/repuestos';
 
-    try {
-      const res = await fetch(url, {
-        method: metodo,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(nuevo)
-      });
-      if (res.ok) {
-        setMostrarModal(false);
-        cargarRepuestos();
-      }
-    } catch (err) { console.error(err); }
-  };
+  const metodo = editandoId ? 'PUT' : 'POST';
+
+  try {
+    const res = await fetch(url, {
+      method: metodo,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(nuevo)
+    });
+
+    if (res.ok) {
+      alert("¡Guardado con éxito!");
+      setMostrarModal(false);
+      cargarRepuestos(); // Esto refresca la lista automáticamente
+    } else {
+      const errorData = await res.json();
+      alert("Error del servidor: " + errorData.error);
+    }
+  } catch (error) {
+    console.error("Error al conectar:", error);
+    alert("No se pudo conectar con el servidor. Revisa tu conexión.");
+  }
+};
 
   const repuestosFiltrados = repuestos.filter(r => 
     r.nombre_tecnico.toLowerCase().includes(busqueda.toLowerCase()) ||
