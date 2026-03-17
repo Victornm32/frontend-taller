@@ -15,11 +15,23 @@ function App() {
     setNuevo(prev => ({ ...prev, ubicacion: codigo }));
   };
 
-  const cargarRepuestos = () => {
-    fetch('https://taller-inventario-1yj3.onrender.com/api/repuestos')
-      .then(res => res.json())
-      .then(datos => setRepuestos(datos));
-  };
+ const cargarRepuestos = async () => {
+  try {
+    const res = await fetch('https://taller-inventario-1yj3.onrender.com/api/repuestos');
+    
+    // Si el servidor no responde con datos (por ejemplo, si está despertando), 
+    // nos salimos de la función sin romper la app
+    if (!res.ok) {
+      console.log("Esperando que el servidor despierte...");
+      return;
+    }
+
+    const datos = await res.json();
+    setRepuestos(datos);
+  } catch (error) {
+    console.error("Error de conexión:", error);
+  }
+};
 
   useEffect(() => { cargarRepuestos(); }, []);
 
